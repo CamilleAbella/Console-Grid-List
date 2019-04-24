@@ -1,0 +1,25 @@
+{
+  "name": "console-gridlist",
+  "version": "1.0.8",
+  "description": " Grid generator for console and markdown code-blocs",
+  "main": "console-grid.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "console",
+    "grid",
+    "array",
+    "case",
+    "tableau",
+    "allign",
+    "colonne",
+    "column",
+    "form",
+    "text",
+    "word",
+    "processor"
+  ],
+  "author": "ghom",
+  "license": "ISC"
+}
