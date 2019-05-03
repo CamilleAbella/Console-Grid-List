@@ -1,7 +1,8 @@
 
 let fill = "════════════════════════════════════════════"
 
-module.exports = function(head,resolvable){
+module.exports = function(title,head,resolvable){
+	let titles = title.split("\n")
 	let body = toArray(resolvable)
 	if(toArray(head)===false){
 		return error("head of grid is malformed")
@@ -9,7 +10,7 @@ module.exports = function(head,resolvable){
 	if(body !== false){
 		body = body.map(a=>toArray(a))
 		if(body.every(a=>a!==false&&a.length===toArray(head).length)){
-			return grid([toArray(head)].concat(body))
+			return grid(titles,[toArray(head)].concat(body))
 		}else{
 			return error("a child grid is malformed")
 		}
@@ -43,19 +44,22 @@ function toArray(resolvable){
 	return false
 }
 
-function grid(array){
+function grid(titles,array){
 	let log = []
 	let max = []
 	let allign = []
-	array.forEach(function(l,i){
-		l.forEach(function(colone,c){
+	array.map(function(l,i){
+		return l.map(function(colone,c){
 			colone = `${colone}`
 			if(i===0){
 				if(colone.includes("→")){
 					colone = colone.replace("→","")
-					allign[c] = false
+					allign[c] = "right"
+				}else if(colone.includes("←")){
+					colone = colone.replace("←","")
+					allign[c] = "left"
 				}else{
-					allign[c] = true
+					allign[c] = "center"
 				}
 			}
 			if(isNaN(max[c])){
@@ -64,14 +68,24 @@ function grid(array){
 			if(max[c] < colone.length){
 				max[c] = colone.length
 			}
+			return colone
 		})
 	})
 	array.forEach(function(l,i){
-		log.push(line(l,max,allign))
+		log.push("║ "+line(l,max,allign)+" ║")
 		if(i===0){
-			log.push(line(l.map(a=>"═"),max,allign))
+			log.push("╠═"+line(l.map(a=>"═"),max,allign)+"═╣")
 		}
 	})
+	log.unshift("╠═"+max.map(m=>fill.slice(0,m)).join("═╦═")+"═╣")
+	titles.reverse().forEach(function(title){
+		let size = 0
+		max.forEach(m=>size+=m)
+		size += (max.length-1)*3
+		log.unshift("║ "+caser(title,size,"center")+" ║")
+	})
+	log.unshift("╔═"+max.map(m=>fill.slice(0,m)).join("═══")+"═╗")
+	log.push("╚═"+max.map(m=>fill.slice(0,m)).join("═╩═")+"═╝")
 	return log.join("\n")
 }
 
@@ -86,11 +100,20 @@ function line(valeurs,max,allign){
 	return log.join(" ║ ")
 }
 
-function caser(texte,size,baseAllign){
+function caser(texte,size,allign){
 	let tmp = `${texte}`.slice(0,size).replace(/\n/g," ")
+	let tick = true
+	if(!allign) allign = "left";
 	while(tmp.length<size){
-		if(baseAllign){
+		if(allign==="left"){
 			tmp += " "
+		}else if(allign==="center"){
+			if(tick){
+				tmp += " "
+			}else{
+				tmp = " " + tmp
+			}
+			tick = !tick
 		}else{
 			tmp = " " + tmp
 		}

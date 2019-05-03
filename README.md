@@ -1,16 +1,38 @@
 # Grid for code-blocs and console
 
+## Install
+
+`npm install console-gridlist@latest`
+
 ## Syntaxe
 
 ```js
+let title = "title"
+// The title of grid
+// String only
+// Line breaks accepted
+
 let head = ["","","",...]
+/* The titles of each column
+	You can set the alignment of cells 
+	by including one of these arrows in 
+	a column title. 
+		left : ←
+		right : →
+		center : none
+*/
+
+// The body is a 2D array 
+// that contains the elements
 let body = [
 	["","","",...],
 	["","","",...],
 	["","","",...],
 	...
 ]
-console.log( grid( head, body))
+
+// Syntaxe
+console.log( grid( title, head, body))
 ```
 
 ## Good to know
@@ -22,20 +44,26 @@ All arrays in the body must be the same length as the head array. A title settin
 ```js
 const grid = require("console-gridlist")
 
-let example = grid("id,name,age",[
+let example = grid("Classement",
 
-	// from Array
-	["1","patrick","20"],
+	// head from string
+	"id→,name,←age",
 
-	// from String
-	"2,bob,30",
+	[// body
 
-	// from Object values
-	{id:3,name:"louis",age:21}
+		// from Array
+		["1","patrick","20"],
 
-	// from other... 
-	// (Map, Discord.Collection)
-])
+		// from String
+		"2,bob,30",
+
+		// from Object values
+		{id:3,name:"louis",age:21}
+
+		// from other... 
+		// (Map, Discord.Collection)
+	]
+)
 
 console.log(example)
 ```
@@ -43,9 +71,13 @@ console.log(example)
 ## Result
 
 ```rust
- id ║ name    ║ age
-════╬═════════╬════
- 1  ║ patrick ║ 20
- 2  ║ bob     ║ 30
- 3  ║ louis   ║ 21
+╔════════════════════╗
+║     Classement     ║
+╠════╦═════════╦═════╣
+║ id ║  name   ║ age ║
+╠════╬═════════╬═════╣
+║  1 ║ patrick ║ 20  ║
+║  2 ║   bob   ║ 30  ║
+║  3 ║  louis  ║ 21  ║
+╚════╩═════════╩═════╝
 ```
